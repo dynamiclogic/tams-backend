@@ -1,0 +1,91 @@
+/* Search */
+.search-input {margin-bottom:0px !important;}
+.search-form {margin: 0px;}
+
+/* Top Bar */
+#top-bar {margin-bottom: 40px;}
+#top-bar .column {float:left;}
+
+#center {width: 33%;}
+#left {width: 33%;}
+#right {width: 33%;}
+
+/* Export */
+.export {float:right;}
+
+/* Container */
+/*.container {
+	width: 100%;
+	margin-right: 20px;
+	margin-left: 20px;
+}*/
+
+.logout {float: right;}
+
+.loading {width: 15px; display:none;}
+
+
+@media (max-width: 991px) {
+	#assets-table {display:none;}
+	#desktop-assets {display: none;}
+}
+
+@media (min-width: 992px) {
+	.list-group-item {display:none;}
+	#mobile-assets-table {display: none;}
+}
+
+/* table image */
+.asset-image-table {
+	width: 50px;
+}
+
+.asset-image {
+	width: 100%;
+}
+.asset-image-table-mobile {
+	float: left;
+	margin-right: 10px;
+}
+
+#image-placeholder {
+	width:148px;
+	height:148px;
+}
+
+#draghere{
+  width:150px;
+  height:150px;
+  background-color:rgba(221,214,155,0.4);
+  border:1px dashed black;
+  text-align:center;
+  margin: 0 auto;
+}
+
+input#fileToUpload {
+	background: url(../img/add_button.png) no-repeat 0 0;
+	display: block;
+	height: 50px;
+	text-indent: -9999px;
+	width: 50px;
+	margin: 0 auto;
+	margin-top: 33%;
+}
+
+.navbar-settings li a {
+	padding-bottom: 4px;
+  	padding-top: 2px;
+}
+
+#settings-icon {
+	width: 44px;
+}
+
+@media (max-width: 769px) {
+	.settings-label {display:block;}
+	#settings-icon {display: none;}
+}
+
+@media (min-width: 768px) {
+	.settings-label {display:none;}
+}
