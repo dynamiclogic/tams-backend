@@ -16,7 +16,6 @@ if ( !isset($assetId) ) {
 	$sql = 'SELECT assets.*,
 	attributes.attribute_label,
 	attributes_values.attribute_value,
-	users.username,
 	locations.longitude,
 	locations.latitude,
 	asset_types.type_value,
@@ -27,7 +26,6 @@ if ( !isset($assetId) ) {
 	LEFT JOIN attributes_indexes ON assets.asset_id = attributes_indexes.asset_id
 	LEFT JOIN attributes ON attributes_indexes.attribute_id = attributes.attribute_id
 	LEFT JOIN attributes_values ON attributes_indexes.attribute_value_id = attributes_values.attribute_value_id
-	LEFT JOIN users ON assets.user_id = users.user_id
 	LEFT JOIN media ON assets.asset_id = media.asset_id
 	LEFT JOIN locations ON assets.asset_id = locations.asset_id
 	WHERE (assets.asset_id = ?)';

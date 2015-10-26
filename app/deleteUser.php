@@ -4,8 +4,8 @@
 
 	$assetId = 0;
 	
-	if ( !empty($_GET['asset_id'])) {
-		$assetId = $_REQUEST['asset_id'];
+	if ( !empty($_GET['userId'])) {
+		$assetId = $_REQUEST['userId'];
 	//}
 
 	//if ( !empty($_POST)) {
@@ -15,11 +15,11 @@
 		// delete data
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "UPDATE assets SET deleted = 1 WHERE asset_id = ?";
+		$sql = "DELETE FROM users WHERE user_id = ?";
 		$q = $pdo->prepare($sql);
 		$q->execute(array($assetId));
 		Database::disconnect();
-		header("Location: home.php");
+		header("Location: accounts.php");
 		
 	} 
 ?>

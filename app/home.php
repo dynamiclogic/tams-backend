@@ -127,6 +127,7 @@ header('Location: index.php');
 					   		   LEFT JOIN asset_types ON assets.type_id = asset_types.asset_type_id
                    LEFT JOIN media ON assets.asset_id = media.asset_id
 					   		   LEFT JOIN locations ON assets.asset_id = locations.asset_id
+                   WHERE deleted = 0
 					   		   ORDER BY assets.asset_id DESC';
               $data = $pdo->query($sql);
 	 				   foreach ($data as $row) {
