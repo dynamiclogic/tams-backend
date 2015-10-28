@@ -51,6 +51,11 @@ $b=array();
 			if ($row[_LOCATIONS_COLUMN_LATITUDE])
 				$b[_LOCATIONS_COLUMN_LATITUDE] = $row[_LOCATIONS_COLUMN_LATITUDE];
 
+			// media
+			$b[_MEDIA_COLUMN_IMAGES] = "";
+			if ($row[_MEDIA_COLUMN_IMAGES])
+				$b[_MEDIA_COLUMN_IMAGES] = $row[_MEDIA_COLUMN_IMAGES];
+
 			array_push($a,$b);
 		}
 		//Post JSON response back to Android Application

@@ -77,7 +77,8 @@ Android SQLite and MySQL Sync - View Assets
     if ($no_of_users > 0) {
 ?>
 <table>
-<tr id="header"><td>id</td>
+<tr id="header"><td>image</td>
+                <td>id</td>
                 <td>Name</td>
                 <td>Description</td>
                 <td>Latitude</td>
@@ -92,6 +93,7 @@ Android SQLite and MySQL Sync - View Assets
     while ($row = mysql_fetch_array($assets)) {
 ?> 
 <tr>
+<td><span><img src="data:image/png;base64,<?php echo $row["images"] ?>"/></span></td>
 <td><span><?php echo $row["asset_id"] ?></span></td>
 <td><span><?php echo $row["name"] ?></span></td>
 <td><span><?php echo $row["description"] ?></span></td>

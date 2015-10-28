@@ -66,7 +66,7 @@ if ( !isset($assetId) ) {
 						<h3 class="panel-title">Image</h3>
 					</div>
 					<div class="panel-body">
-						<img class="asset-image" src="<?php echo $data[0]['images'];?>" />
+						<img class="asset-image" src="data:image/png;base64,<?php echo $data[0]['images'];?>" />
 					</div>
 				</div>
 			</div>

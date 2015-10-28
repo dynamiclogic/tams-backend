@@ -29,7 +29,7 @@ $purgeAsset = null;
 for($i=0; $i<count($data) ; $i++) {
 
 	$asset_id = $asset_name = $asset_description = $asset_created_at = $asset_updated_at = "";
-	$asset_deleted = $asset_latitude = $asset_longitude = "";
+	$asset_deleted = $asset_latitude = $asset_longitude = $asset_images= "";
 
 	if (isset($data[$i]->asset_id))
 		$asset_id = $data[$i]->asset_id;
@@ -47,6 +47,8 @@ for($i=0; $i<count($data) ; $i++) {
 		$asset_latitude = $data[$i]->latitude;
 	if (isset($data[$i]->longitude))
 		$asset_longitude = $data[$i]->longitude;
+	if (isset($data[$i]->images))
+		$asset_images = $data[$i]->images;
 
 	if ($data[$i]->deleted != 1) {
 		if ($data[$i]->isNew == 1) {
@@ -58,7 +60,8 @@ for($i=0; $i<count($data) ; $i++) {
 								   $asset_updated_at,
 								   $asset_deleted,
 								   $asset_latitude,
-								   $asset_longitude);
+								   $asset_longitude,
+								   $asset_images);
 		} else {
 			$query = $db->updateAsset($asset_id,
 								   	  $asset_name,
@@ -67,7 +70,8 @@ for($i=0; $i<count($data) ; $i++) {
 								   	  $asset_updated_at,
 								   	  $asset_deleted,
 								   	  $asset_latitude,
-								   	  $asset_longitude); //send the timestamp to compare
+								   	  $asset_longitude,
+								   	  $asset_images); //send the timestamp to compare
 		}
 	} else {
 		$query = $db->deleteAsset($data[$i]->asset_id);

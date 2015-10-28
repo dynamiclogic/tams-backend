@@ -137,7 +137,7 @@ header('Location: index.php');
 
                   echo '<a href="read.php?asset_id='.$row['asset_id'].'" class="list-group-item">';
                   if ($row['images']) {
-                    echo '<img class="asset-image-table asset-image-table-mobile" src="' . $row['images'] . '"/>';
+                    echo '<img class="asset-image-table asset-image-table-mobile" src="data:image/png;base64,' . $row['images'] . '"/>';
                   }
                   echo '<h4 class="list-group-item-heading">';
                   echo $row['name'];
@@ -145,7 +145,7 @@ header('Location: index.php');
 						   		echo '<tr>';
                   echo '<td>';
                   if ($row['images']) {
-                    echo '<img class="asset-image-table" src="'. $row['images'] . '"/>';
+                    echo '<img class="asset-image-table" src="data:image/png;base64,'. $row['images'] . '"/>';
                   }
                   echo '</td>';
 							   	echo '<td>'. $row['asset_id'] . '</td>';

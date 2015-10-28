@@ -23,7 +23,7 @@ class DB_Functions {
      * Storing new asset
      * returns asset details
      */
-    public function addAsset($asset_id,$name,$description,$created_at,$updated_at,$deleted,$latitude,$longitude) {
+    public function addAsset($asset_id='',$name='',$description='',$created_at='',$updated_at='',$deleted='',$latitude='',$longitude='',$images='') {
         // Insert user into database
         //$timestamp = time();
         //$deleted = 0;
@@ -38,13 +38,18 @@ class DB_Functions {
                                                   ._LOCATIONS_COLUMN_LATITUDE.", "
                                                   ._LOCATIONS_COLUMN_LONGITUDE.")
                                 VALUES('$asset_id','$latitude','$longitude')";
+        $mediaQuery = "INSERT INTO " ._MEDIA_TABLE. " ("._MEDIA_COLUMN_ASSET_ID.", "
+                                                  ._MEDIA_COLUMN_IMAGES.")
+                                VALUES('$asset_id','$images')";
         $assetResult = mysql_query($assetQuery);
-        if($assetResult)
+        if($assetResult) {
             $locationResult = mysql_query($locationQuery);
+            $mediaResult = mysql_query($mediaQuery);
+        }
     
         //error_log($query);
         
-        if ($assetResult && $locationResult) {
+        if ($assetResult && $locationResult && $mediaResult) {
             return true;
         } else {
             if( mysql_errno() == 1062) {
@@ -85,7 +90,7 @@ class DB_Functions {
      * Mark asset as deleted
      * 
      */
-    public function updateAsset($asset_id,$name,$description,$created_at,$updated_at,$deleted,$latitude,$longitude) {
+    public function updateAsset($asset_id='',$name='',$description='',$created_at='',$updated_at='',$deleted='',$latitude='',$longitude='',$images='') {
         //Insert user into database
         //$timestamp = time();
         $assetQuery = "UPDATE assets SET " ._ASSETS_COLUMN_ASSET_NAME. " = '$name'," 
@@ -99,12 +104,17 @@ class DB_Functions {
                                      ._LOCATIONS_COLUMN_LONGITUDE. "= '$longitude'
                                 WHERE "
                                      ._LOCATIONS_COLUMN_ASSET_ID. "= '$asset_id' ";
+        $mediaQuery = "UPDATE "._MEDIA_TABLE." SET " ._MEDIA_COLUMN_IMAGES. " = '$images'
+                                WHERE "
+                                     ._MEDIA_COLUMN_ASSET_ID. "= '$asset_id' ";
         //error_log($query);
         $assetResult = mysql_query($assetQuery);
-        if ($assetResult)
+        if ($assetResult) {
             $locationResult = mysql_query($locationQuery);
+            $mediaResult = mysql_query($mediaQuery);
+        }
         
-        if ($assetResult && $locationResult) {
+        if ($assetResult && $locationResult && $mediaResult) {
             return true;
         } else {
             if( mysql_errno() == 1062) {
@@ -123,9 +133,12 @@ class DB_Functions {
     public function getAllAssets() {
         $sql = 'SELECT '._ASSETS_TABLE.'.*,
                        '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LONGITUDE.',
-                       '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LATITUDE.'
+                       '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LATITUDE.',
+                       '._MEDIA_TABLE.'.'._MEDIA_COLUMN_IMAGES.'
                 FROM '._ASSETS_TABLE.' 
-                LEFT JOIN '._LOCATIONS_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_ASSET_ID;
+                LEFT JOIN '._LOCATIONS_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_ASSET_ID.'
+                LEFT JOIN '._MEDIA_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._MEDIA_TABLE.'.'._MEDIA_COLUMN_ASSET_ID;
+;
         $result = mysql_query($sql);
         return $result;
     }
@@ -137,8 +150,10 @@ class DB_Functions {
         $sql = 'SELECT '._ASSETS_TABLE.'.*,
                        '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LONGITUDE.',
                        '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LATITUDE.'
+                       '._MEDIA_TABLE.'.'._MEDIA_COLUMN_IMAGES.'
                 FROM '._ASSETS_TABLE.' 
-                LEFT JOIN '._LOCATIONS_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_ASSET_ID.
+                LEFT JOIN '._LOCATIONS_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_ASSET_ID.'
+                LEFT JOIN '._MEDIA_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._MEDIA_TABLE.'.'._MEDIA_COLUMN_ASSET_ID.
                 ' WHERE '._ASSETS_COLUMN_DELETED. ' = 0';
         $result = mysql_query($sql);
         return $result;
