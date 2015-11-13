@@ -1,12 +1,11 @@
 <?php
 
 /* Database Config */
-if (!defined ('database')) {
-	define('database', 'tams'); 
-	define('host', 'localhost');
-	define('username', 'tams');
-	define('password', 'tams');
-}
+define("DB_HOST", "localhost");
+define("DB_USER", "tams");
+define("DB_PASSWORD", "tams");
+define("DB_DATABASE", "tams");
+
 /* Skin */
 if (!defined ('skin')) {
 	define('skin', '../skin/default/');

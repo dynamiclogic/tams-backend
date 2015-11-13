@@ -149,12 +149,13 @@ class DB_Functions {
     public function getAllActiveAssets() {
         $sql = 'SELECT '._ASSETS_TABLE.'.*,
                        '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LONGITUDE.',
-                       '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LATITUDE.'
+                       '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LATITUDE.',
                        '._MEDIA_TABLE.'.'._MEDIA_COLUMN_IMAGES.'
                 FROM '._ASSETS_TABLE.' 
                 LEFT JOIN '._LOCATIONS_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_ASSET_ID.'
                 LEFT JOIN '._MEDIA_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._MEDIA_TABLE.'.'._MEDIA_COLUMN_ASSET_ID.
-                ' WHERE '._ASSETS_COLUMN_DELETED. ' = 0';
+                ' WHERE '._ASSETS_COLUMN_DELETED. ' = 0
+                ORDER BY '._ASSETS_COLUMN_ASSET_ID.' DESC';
         $result = mysql_query($sql);
         return $result;
     }

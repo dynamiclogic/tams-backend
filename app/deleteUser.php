@@ -1,24 +1,15 @@
 <?php 
 	include 'config.php';
-	include 'database.php';
+	include 'db_functions.php';
 
-	$assetId = 0;
+	$user_id = 0;
 	
-	if ( !empty($_GET['userId'])) {
-		$assetId = $_REQUEST['userId'];
-	//}
-
-	//if ( !empty($_POST)) {
-		// keep track post values
-	//	$assetId = $_POST['asset_id'];
+	if ( !empty($_GET['user_id'])) {
+		$user_id = $_REQUEST['user_id'];
 		
 		// delete data
-		$pdo = Database::connect();
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "DELETE FROM users WHERE user_id = ?";
-		$q = $pdo->prepare($sql);
-		$q->execute(array($assetId));
-		Database::disconnect();
+		$db = new DB_Functions();
+		$db->deleteUser($user_id);
 		header("Location: accounts.php");
 		
 	} 
@@ -40,8 +31,8 @@
 		    			<h3>Delete an Asset</h3>
 		    		</div>
 		    		
-	    			<form class="form-horizontal" action="delete.php" method="post">
-	    			  <input type="hidden" name="assetId" value="<?php echo $assetId;?>"/>
+	    			<form class="form-horizontal" action="deleteUser.php" method="post">
+	    			  <input type="hidden" name="user_id" value="<?php echo $user_id;?>"/>
 					  <p class="alert alert-error">Are you sure to delete ?</p>
 					  <div class="form-actions">
 						  <button type="submit" class="btn btn-danger">Yes</button>

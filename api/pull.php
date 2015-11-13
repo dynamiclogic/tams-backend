@@ -63,5 +63,7 @@ $b=array();
 
 //}
 		echo json_encode($a);
+		error_log("PULL SERVER RESPONCE: ".json_encode($a),0);
+
 
 ?>

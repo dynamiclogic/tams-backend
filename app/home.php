@@ -1,5 +1,6 @@
 <?php
 include "config.php";
+include "db_functions.php";
 session_start();
 if(empty($_SESSION['login_user']))
 {
@@ -114,57 +115,45 @@ header('Location: index.php');
 		              </thead>
 		              <tbody>
 		              <?php 
-					   include 'database.php';
              $temp_assets = array();
-					   $pdo = Database::connect();
 
-					   $sql = 'SELECT assets.*,
-					   				  locations.longitude,
-					   				  locations.latitude,
-					   				  asset_types.type_value,
-                      media.images
-					   		   FROM assets
-					   		   LEFT JOIN asset_types ON assets.type_id = asset_types.asset_type_id
-                   LEFT JOIN media ON assets.asset_id = media.asset_id
-					   		   LEFT JOIN locations ON assets.asset_id = locations.asset_id
-                   WHERE deleted = 0
-					   		   ORDER BY assets.asset_id DESC';
-              $data = $pdo->query($sql);
-	 				   foreach ($data as $row) {
+					   $db = new DB_Functions();
+             $assets = $db->getActiveAssets();
+
+	 				   foreach ($assets as $asset) {
                   //check for unique results
-                  if (!in_array($row['asset_id'], $temp_assets)) {
-                    $temp_assets[] = $row['asset_id'];;
+                  if (!in_array($asset['asset_id'], $temp_assets)) {
+                    $temp_assets[] = $asset['asset_id'];;
 
-                  echo '<a href="read.php?asset_id='.$row['asset_id'].'" class="list-group-item">';
-                  if ($row['images']) {
-                    echo '<img class="asset-image-table asset-image-table-mobile" src="data:image/png;base64,' . $row['images'] . '"/>';
+                  echo '<a href="read.php?asset_id='.$asset['asset_id'].'" class="list-group-item">';
+                  if ($asset['images']) {
+                    echo '<img class="asset-image-table asset-image-table-mobile" src="data:image/png;base64,' . $asset['images'] . '"/>';
                   }
                   echo '<h4 class="list-group-item-heading">';
-                  echo $row['name'];
-                  echo '</h4><p class="list-group-item-text">' . $row['description'] . '</p></a>';
+                  echo $asset['name'];
+                  echo '</h4><p class="list-group-item-text">' . $asset['description'] . '</p></a>';
 						   		echo '<tr>';
                   echo '<td>';
-                  if ($row['images']) {
-                    echo '<img class="asset-image-table" src="data:image/png;base64,'. $row['images'] . '"/>';
+                  if ($asset['images']) {
+                    echo '<img class="asset-image-table" src="data:image/png;base64,'. $asset['images'] . '"/>';
                   }
                   echo '</td>';
-							   	echo '<td>'. $row['asset_id'] . '</td>';
-							   	echo '<td>'. $row['name'] . '</td>';
-							   	echo '<td>'. $row['description'] . '</td>';
-							   	echo '<td>'. $row['type_value'] . '</td>';
-							   	echo '<td>'. $row['longitude'] . '<br>' . $row['latitude'] . '</td>';
-							   	echo '<td>'. $row['created_by'] . '</td>';
+							   	echo '<td>'. $asset['asset_id'] . '</td>';
+							   	echo '<td>'. $asset['name'] . '</td>';
+							   	echo '<td>'. $asset['description'] . '</td>';
+							   	echo '<td>'. $asset['type_value'] . '</td>';
+							   	echo '<td>'. $asset['longitude'] . '<br>' . $asset['latitude'] . '</td>';
+							   	echo '<td>'. $asset['created_by'] . '</td>';
 							   	echo '<td width=250>';
-							   	echo '<a class="btn btn-default" href="read.php?asset_id='.$row['asset_id'].'">Read</a>';
+							   	echo '<a class="btn btn-default" href="read.php?asset_id='.$asset['asset_id'].'">Read</a>';
 							   	echo '&nbsp;';
-							   	echo '<a class="btn btn-success" href="update.php?asset_id='.$row['asset_id'].'">Update</a>';
+							   	echo '<a class="btn btn-success" href="update.php?asset_id='.$asset['asset_id'].'">Update</a>';
 							   	echo '&nbsp;';
-							   	echo '<a class="btn btn-danger" href="delete.php?asset_id='.$row['asset_id'].'">Delete</a>';
+							   	echo '<a class="btn btn-danger" href="delete.php?asset_id='.$asset['asset_id'].'">Delete</a>';
 							   	echo '</td>';
 							   	echo '</tr>';
                  }
 					   }
-					   Database::disconnect();
 					  ?>
 				      </tbody>
 	            </table>

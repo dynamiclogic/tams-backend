@@ -1,26 +1,16 @@
 <?php 
 	include 'config.php';
-	include 'database.php';
+	include 'db_functions.php';
 
-	$assetId = 0;
+	$asset_id = 0;
 	
 	if ( !empty($_GET['asset_id'])) {
-		$assetId = $_REQUEST['asset_id'];
-	//}
+		$asset_id = $_REQUEST['asset_id'];
 
-	//if ( !empty($_POST)) {
-		// keep track post values
-	//	$assetId = $_POST['asset_id'];
-		
-		// delete data
-		$pdo = Database::connect();
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "UPDATE assets SET deleted = 1 WHERE asset_id = ?";
-		$q = $pdo->prepare($sql);
-		$q->execute(array($assetId));
-		Database::disconnect();
-		header("Location: home.php");
-		
+		$db = new DB_Functions();
+		$db->addAsset($asset_id);
+
+		header("Location: index.php");
 	} 
 ?>
 
@@ -41,7 +31,7 @@
 		    		</div>
 		    		
 	    			<form class="form-horizontal" action="delete.php" method="post">
-	    			  <input type="hidden" name="assetId" value="<?php echo $assetId;?>"/>
+	    			  <input type="hidden" name="asset_id" value="<?php echo $asset_id;?>"/>
 					  <p class="alert alert-error">Are you sure to delete ?</p>
 					  <div class="form-actions">
 						  <button type="submit" class="btn btn-danger">Yes</button>

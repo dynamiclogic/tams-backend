@@ -1,40 +1,16 @@
 <?php 
 include 'config.php';
-include 'database.php';
+include 'db_functions.php';
 
 if ( !empty($_GET['asset_id'])) {
-	$assetId = $_REQUEST['asset_id'];
+	$asset_id = $_REQUEST['asset_id'];
 }
 
-if ( !isset($assetId) ) {
+if ( !isset($asset_id) ) {
 	header("Location: index.php");
 } else {
-	$pdo = Database::connect();
-	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		//$sql = "SELECT * FROM assets where asset_id = ?";
-
-	$sql = 'SELECT assets.*,
-	attributes.attribute_label,
-	attributes_values.attribute_value,
-	locations.longitude,
-	locations.latitude,
-	asset_types.type_value,
-	media.images,
-	media.voice_memo
-	FROM assets 
-	LEFT JOIN asset_types ON assets.type_id = asset_types.asset_type_id
-	LEFT JOIN attributes_indexes ON assets.asset_id = attributes_indexes.asset_id
-	LEFT JOIN attributes ON attributes_indexes.attribute_id = attributes.attribute_id
-	LEFT JOIN attributes_values ON attributes_indexes.attribute_value_id = attributes_values.attribute_value_id
-	LEFT JOIN media ON assets.asset_id = media.asset_id
-	LEFT JOIN locations ON assets.asset_id = locations.asset_id
-	WHERE (assets.asset_id = ?)';
-
-
-	$q = $pdo->prepare($sql);
-	$q->execute(array($assetId));
-	$data = $q->fetchall(PDO::FETCH_ASSOC);
-	Database::disconnect();
+	$db = new DB_Functions();
+	$asset = $db->getAssetById($asset_id);
 }
 ?>
 
@@ -57,7 +33,7 @@ if ( !isset($assetId) ) {
 				<div class="form-actions" style="float:right;padding-top: 10px;">
 					<a class="btn btn-default" href="home.php">Back</a>
 				</div>
-				<h3><?php echo $data[0]['name'];?> - ID:<?php echo $data[0]['asset_id'];?></h3>
+				<h3><?php echo $asset['name'];?> - ID:<?php echo $asset['asset_id'];?></h3>
 			</div>
 
 			<div class="col-lg-6">
@@ -66,7 +42,7 @@ if ( !isset($assetId) ) {
 						<h3 class="panel-title">Image</h3>
 					</div>
 					<div class="panel-body">
-						<img class="asset-image" src="data:image/png;base64,<?php echo $data[0]['images'];?>" />
+						<img class="asset-image" src="data:image/png;base64,<?php echo $asset['images'];?>" />
 					</div>
 				</div>
 			</div>
@@ -80,25 +56,25 @@ if ( !isset($assetId) ) {
 
 						<div class="control-group">
 							<label class="control-label">Description:</label>
-							<?php echo $data[0]['description'];?>
+							<?php echo $asset['description'];?>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label">Location:</label>
-							Lat:<?php echo $data[0]['latitude'];?>   Long:<?php echo $data[0]['longitude'];?>
+							Lat:<?php echo $asset['latitude'];?>   Long:<?php echo $asset['longitude'];?>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label">Created by:</label>
-							<?php echo $data[0]['username'];?>
+							<?php echo $asset['username'];?>
 						</div>
 
-						<div class="control-group">
-							<?php foreach ($data as $row): ?>
+						<!--<div class="control-group">
+							<?php foreach ($asset as $row): ?>
 								<br>
 								<?php echo '<strong>' . $row['attribute_label'] .':</strong> '. $row['attribute_value'];?>
 							<?php endforeach;?>
-						</div>
+						</div>-->
 					</div>
 
 				</div>
@@ -111,7 +87,7 @@ if ( !isset($assetId) ) {
 					</div>
 					<div class="panel-body">
 						<iframe frameborder="0" style="border:0; width:100%; height:300px"
-						src="https://www.google.com/maps/embed/v1/search?key=AIzaSyAzCBWqT8X-Gmkohu5UJi7Umkio_wb6mK8&q=<?php echo $data[0]['latitude'];?>,<?php echo $data[0]['longitude'];?>">
+						src="https://www.google.com/maps/embed/v1/search?key=AIzaSyAzCBWqT8X-Gmkohu5UJi7Umkio_wb6mK8&q=<?php echo $asset['latitude'];?>,<?php echo $asset['longitude'];?>">
 					</iframe>
 				</div>
 			</div>

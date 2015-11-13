@@ -1,6 +1,6 @@
 <?php
-include 'database.php';
-$pdo   = Database::connect();
+include 'db_connect.php';
+$pdo   = DB_Connect::connect();
 $count = 0;
 
 session_start();

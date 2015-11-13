@@ -16,14 +16,14 @@ $apiPassword = $_POST[_API_AUTH_POST];
 //$jsonAssets = stripslashes($jsonAssets);
 //Decode JSON into an Array
 $data = json_decode($jsonAssets);
-error_log($jsonAssets,0);
+error_log("PUSH SERVER RECEIVED: ".$jsonAssets,0);
 //error_log($apiPassword,0);
 
 //Util arrays to create response JSON
 $a=array();
 $b=array();
 
-$purgeAsset = null;
+$purgeAsset = 0;
 
 //Loop through an Array and insert data read from JSON into MySQL DB
 for($i=0; $i<count($data) ; $i++) {
@@ -92,4 +92,6 @@ for($i=0; $i<count($data) ; $i++) {
 }
 //Post JSON response back to Android Application
 echo json_encode($a);
+error_log("PUSH SERVER RESPONSE: ".json_encode($a),0);
+
 ?>

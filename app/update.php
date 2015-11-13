@@ -1,14 +1,14 @@
 <?php 
 	include 'config.php';
-	include 'database.php';
+	include 'db_functions.php';
 
-	$assetId = 0;
+	$asset_id = 0;
 
 	if ( !empty($_GET['asset_id'])) {
-		$assetId = $_REQUEST['asset_id'];
+		$asset_id = $_REQUEST['asset_id'];
 	}
 	
-	if ( null==$assetId ) {
+	if ( null==$asset_id ) {
 		header("Location: index.php");
 	}
 	
@@ -34,24 +34,15 @@
 		}
 		// update data
 		if ($valid) {
-			$pdo = Database::connect();
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$sql = "UPDATE assets  set name = ?, description = ? WHERE asset_id = ?";
-			$q = $pdo->prepare($sql);
-			$q->execute(array($name,$description,$assetId));
-			Database::disconnect();
+			$db = new DB_Functions();
+			$db->updateAsset($asset_id, $name, $description);
 			header("Location: index.php");
 		}
 	} else {
-		$pdo = Database::connect();
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "SELECT * FROM assets where asset_id = ?";
-		$q = $pdo->prepare($sql);
-		$q->execute(array($assetId));
-		$data = $q->fetch(PDO::FETCH_ASSOC);
-		$name = $data['name'];
-		$description = $data['description'];
-		Database::disconnect();
+		$db = new DB_Functions();
+		$asset = $db->getAssetById($asset_id);
+		$name = $asset['name'];
+		$description = $asset['description'];
 	}
 ?>
 
@@ -73,7 +64,7 @@
 		    			<h3>Update an Asset</h3>
 		    		</div>
     		
-	    			<form class="form-horizontal" action="update.php?asset_id=<?php echo $assetId?>" method="post">
+	    			<form class="form-horizontal" action="update.php?asset_id=<?php echo $asset_id?>" method="post">
 					  <div class="control-group <?php echo !empty($nameError)?'error':'';?>">
 					    <label class="control-label">Name</label>
 					    <div class="controls">

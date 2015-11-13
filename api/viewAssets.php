@@ -66,7 +66,7 @@ Android SQLite and MySQL Sync - View Assets
 <?php
     include_once 'db_functions.php';
     $db = new DB_Functions();
-    $assets = $db->getAllAssets();
+    $assets = $db->getAllActiveAssets();
     if ($assets != false)
         $no_of_users = mysql_num_rows($assets);
     else

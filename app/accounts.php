@@ -1,6 +1,6 @@
 <?php
 include "config.php";
-include 'database.php';
+include 'db_functions.php';
 
 session_start();
 if(empty($_SESSION['login_user']))
@@ -166,32 +166,31 @@ if ( !empty($_POST)) {
     </thead>
     <tbody>
       <?php 
-      $pdo = Database::connect();
+        $db = new DB_Functions();
+        $users = $db->getAllUsers();
 
-      $sql = 'SELECT * FROM users ORDER BY user_id DESC';
-      foreach ($pdo->query($sql) as $row) {
-        echo '<a href="read.php?userId='.$row['user_id'].'" class="list-group-item">';
-        echo '<h4 class="list-group-item-heading">';
-        echo $row['firstname'] . ' ' . $row['lastname'];
-        echo '</h4><p class="list-group-item-text">' . $row['username'] . '</p></a>';
-        echo '<tr>';
-        echo '<td>'. $row['user_id'] . '</td>';
-        echo '<td>'. $row['firstname'] . '</td>';
-        echo '<td>'. $row['lastname'] . '</td>';
-        echo '<td>'. $row['username'] . '</td>';
-        echo '<td>'. $row['email'] . '</td>';                  
-        echo '<td>';
-        if ($row['role'] == 0) echo 'Admin';
-        else echo 'User';
-        echo '</td>';
-        echo '<td width=250>';
-        echo '<a class="btn btn-default" href="editUser.php?userId='.$row['user_id'].'">Edit</a>';
-        echo '&nbsp;';
-        echo '<a class="btn btn-danger" href="deleteUser.php?userId='.$row['user_id'].'">Delete</a>';
-        echo '</td>';
-        echo '</tr>';
-      }
-      Database::disconnect();
+        foreach ($users as $user) {
+          echo '<a href="read.php?user_id='.$user['user_id'].'" class="list-group-item">';
+          echo '<h4 class="list-group-item-heading">';
+          echo $user['firstname'] . ' ' . $user['lastname'];
+          echo '</h4><p class="list-group-item-text">' . $user['username'] . '</p></a>';
+          echo '<tr>';
+          echo '<td>'. $user['user_id'] . '</td>';
+          echo '<td>'. $user['firstname'] . '</td>';
+          echo '<td>'. $user['lastname'] . '</td>';
+          echo '<td>'. $user['username'] . '</td>';
+          echo '<td>'. $user['email'] . '</td>';                  
+          echo '<td>';
+          if ($user['role'] == 0) echo 'Admin';
+          else echo 'User';
+          echo '</td>';
+          echo '<td width=250>';
+          echo '<a class="btn btn-default" href="editUser.php?user_id='.$user['user_id'].'">Edit</a>';
+          echo '&nbsp;';
+          echo '<a class="btn btn-danger" href="deleteUser.php?user_id='.$user['user_id'].'">Delete</a>';
+          echo '</td>';
+          echo '</tr>';
+        }
       ?>
     </tbody>
   </table>

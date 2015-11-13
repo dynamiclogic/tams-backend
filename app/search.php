@@ -1,6 +1,6 @@
 <?php
-include 'database.php';
-	$conn = Database::connect();
+include 'db_connect.php';
+	$conn = DB_Connect::connect();
 	             $temp_assets = array();
 
 	$OK = true; // We use this to verify the status of the update.

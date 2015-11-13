@@ -1,6 +1,6 @@
 <?php 
 include 'config.php';
-include 'database.php';
+include 'db_functions.php';
 
 if ( !empty($_POST)) {
 		// keep track validation errors
@@ -27,31 +27,11 @@ if ( !empty($_POST)) {
 		$valid = false;
 	}
 
-		// insert data
+	// insert data
 	if ($valid) {
-		$pdo = Database::connect();
-
-			//ASSET
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$assetSql = "INSERT INTO assets (name,description) values(?, ?)";
-		$assetQuery = $pdo->prepare($assetSql);
-		$assetQuery->execute(array($name,$description));
-
-			//LOCATION
-		/* get last inserted auto_increment id */
-		$newAssetId = $pdo->lastInsertId();
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$locationSql = "INSERT INTO locations (asset_id, latitude, longitude) values(?, ?, ?)";
-		$locationQuery = $pdo->prepare($locationSql);
-		$locationQuery->execute(array($newAssetId, $latitude, $longitude));
-
-			//media
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$mediaSql = "INSERT INTO media (asset_id, images, voice_memo) values(?, ?, ?)";
-		$mediaQuery = $pdo->prepare($mediaSql);
-		$mediaQuery->execute(array($newAssetId, $images, $voice_memo));
-
-		Database::disconnect();
+		//Create Object for DB_Functions clas
+		$db = new DB_Functions();
+		$db->addAsset($name, $description, $latitude, $longitude, $images);
 		header("Location: index.php");
 	}
 }
