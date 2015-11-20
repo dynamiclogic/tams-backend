@@ -8,7 +8,7 @@
 		$asset_id = $_REQUEST['asset_id'];
 
 		$db = new DB_Functions();
-		$db->addAsset($asset_id);
+		$db->deleteAsset($asset_id);
 
 		header("Location: index.php");
 	} 
