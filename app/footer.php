@@ -47,7 +47,6 @@
 
     <script type="text/javascript">
     	jQuery(document).ready(function($) {
-        $("#mobile-assets-table").append($(".list-group-item"));
     		$('.search-input').keyup(function(){
     			makeAjaxRequest();
     		});

@@ -74,7 +74,8 @@ for($i=0; $i<count($data) ; $i++) {
 								   	  $asset_images); //send the timestamp to compare
 		}
 	} else {
-		$query = $db->deleteAsset($data[$i]->asset_id);
+		$query = $db->deleteAsset($data[$i]->asset_id,
+								  $data[$i]->updated_at);
 		if ($query) $purgeAsset = 1;
 	}
 	//Based on inserttion, create JSON response to set the asset flags
@@ -83,10 +84,12 @@ for($i=0; $i<count($data) ; $i++) {
 		$b[_ASSETS_COLUMN_NEEDSSYNC] = 0; //asset does not need sync any more
 		$b[_ASSETS_COLUMN_ISNEW] = 0; //mark the asset as NOT new
 		$b["purgeAsset"] = $purgeAsset; //if asset was successfully deleted, purged from client
+		$b["error"] = 0; // if query was successfull return 0
 		array_push($a,$b);
 	} else {	//if insert failed
 		$b[_ASSETS_COLUMN_ASSET_ID] = $data[$i]->asset_id;
 		$b[_ASSETS_COLUMN_NEEDSSYNC] = 1;
+		$b["error"] = 1; //if query was not successfull return 1
 		array_push($a,$b);
 	}
 }

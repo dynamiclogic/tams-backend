@@ -9,13 +9,76 @@ header('Location: index.php');
 
 ?>
 
+<script type="text/javascript">
+
+//pull the table body
+function populateAssets() {
+	$.ajax({
+	    type: "GET", // HTTP method POST or GET
+	    url: "assets_table.php", //Where to make Ajax calls
+	    //dataType:"text", // Data type, HTML, json etc.
+	    dataType: 'html',
+	    /*data: {
+	        name: $('#name').val(),
+	        address: $('#address').val(),
+	        city: $('#city').val()
+	    },*/
+	    success: function(data) {
+	        $('#assets_table table > tbody:first').html(data);
+	        //alert(data);
+	    },
+	    error: function(xhr, ajaxOptions, thrownError) {
+	        //On error, we alert user
+	        //alert(thrownError);
+	    },
+	    complete: function() {
+	    	d = new Date();
+	        $('#last_refreshed').html("Last Refreshed:<br>" + d.toLocaleString()); 
+	        $("#mobile-assets-table").html("");
+	        $("#mobile-assets-table").html($(".list-group-item"));
+	    }
+	});
+}
+
+window.onload = populateAssets;
+
+var interval;
+
+// refresh the table every x seconds
+function timedRefresh(timeoutPeriod) {
+	clearInterval(interval);
+	interval=0;
+
+	if (timeoutPeriod != 0) {
+		interval = setInterval(populateAssets, timeoutPeriod);
+	}
+}
+
+function refreshOnChange(thisObj) {
+	timedRefresh(thisObj.val());
+}
+
+</script>
+
 <?php include_once 'header.php'; ?>
 
-    <div class="container">
-			<div class="row">
+    <div class="container" id="assets_table">
+    		<div class="row">
 				<div id="top-bar">
 					<div id="left" class="column">
 						<a href="create.php" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-plus"></i> &nbsp; Add Asset</a>
+					</div>
+					<div id="center" class="column">
+						<span id="last_refreshed"></span>
+					</div>
+					<div id="right" class="column">
+						<select id="refresh_rate" class="form-control" onchange="refreshOnChange($(this));">
+							<option value="0">No Refresh</option>
+							<option value="1000">Every 1 sec</option>
+							<option value="5000">Every 5 sec</option>
+							<option value="10000">Every 10 sec</option>
+							<option value="30000">Every 30 sec</option>
+						</select>
 					</div>
 		    </div>
 		  </div>
@@ -32,59 +95,17 @@ header('Location: index.php');
 		                  	<th>Type</th>
 		                  	<th>Location</th>
 		                  	<th>Created By</th>
+		                  	<th>Update At</th>
 		                  	<th colspan="3" align="center">Actions</th>
 		                </tr>
 		            </thead>
-		            <tbody>
-		            	<?php 
-             				$temp_assets = array();
-					   		$db = new DB_Functions();
-             				$assets = $db->getActiveAssets();
-             			?>
-
-	 					<?php foreach ($assets as $asset):?>
-                 			<?php //check for unique results
-                 				if (!in_array($asset['asset_id'], $temp_assets)) {
-                 			  		$temp_assets[] = $asset['asset_id'];
-                 			  	}
-                 			?>
-
-                 			<a href="read.php?asset_id=<?php print($asset['asset_id'])?>" class="list-group-item">
-                 				<?php if ($asset['images']): ?>
-                 					<img class="asset-image-table asset-image-table-mobile" src="data:image/png;base64,<?php print($asset['images']) ?>"/>
-                 				<?php endif; ?>
-                 				<h4 class="list-group-item-heading">
-                 					<?php print($asset['name']); ?>
-                 				</h4>
-                 				<p class="list-group-item-text"> <?php print($asset['description'])?> </p>
-                 			</a>
-
-						   	<tr>
-                 				<td>
-                 					<?php if ($asset['images']): ?>
-                 			  			<img class="asset-image-table" src="data:image/png;base64,<?php print($asset['images'])?>"/>
-                 			  		<?php endif; ?>
-                 				</td>
-							   	<td><?php print($asset['asset_id'])?></td>
-							   	<td><?php print($asset['name'])?></td>
-							   	<td><?php print($asset['description'])?></td>
-							   	<td><?php print($asset['type_value'])?></td>
-							   	<td><?php print($asset['longitude'])?><br><?php print($asset['latitude'])?></td>
-							   	<td><?php print($asset['created_by'])?></td>
-							   	<td align="center">
-							   		<a href="read.php?asset_id=<?php print($asset['asset_id'])?>"><i class="glyphicon glyphicon-eye-open"></i></a>
-							   	</td>
-                 				<td align="center">
-							   		<a href="update.php?asset_id=<?php print($asset['asset_id'])?>"><i class="glyphicon glyphicon-edit"></i></a>
-							   	</td>
-							   	<td align="center">
-							   		<a href="delete.php?asset_id=<?php print($asset['asset_id'])?>"><i class="glyphicon glyphicon-remove-circle"></i></a>
-							   	</td>
-							</tr>
-					  	<?php endforeach ?>
-				      </tbody>
-	            </table>
-    	</div>
+		            	<tbody>
+		            		<tr>
+		            			<td colspan="9">LOADING DATA...</td>
+		            		</tr>
+		            	</tbody>
+		        </table>
+    		</div>
     </div> <!-- /container -->
 
 <?php include_once 'footer.php'; ?>

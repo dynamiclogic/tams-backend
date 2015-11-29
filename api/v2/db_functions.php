@@ -47,7 +47,7 @@ class DB_Functions {
             $mediaResult = mysql_query($mediaQuery);
         }
     
-        //error_log($query);
+        //error_log($assetQuery);
         
         if ($assetResult && $locationResult && $mediaResult) {
             return true;
@@ -139,7 +139,23 @@ class DB_Functions {
                 FROM '._ASSETS_TABLE.' 
                 LEFT JOIN '._LOCATIONS_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_ASSET_ID.'
                 LEFT JOIN '._MEDIA_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._MEDIA_TABLE.'.'._MEDIA_COLUMN_ASSET_ID;
-;
+
+        $result = mysql_query($sql);
+        return $result;
+    }
+
+    /**
+     * Getting asset by id 
+     */
+    public function getAssetById($asset_id) {
+        $sql = 'SELECT '._ASSETS_TABLE.'.*,
+                       '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LONGITUDE.',
+                       '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_LATITUDE.',
+                       '._MEDIA_TABLE.'.'._MEDIA_COLUMN_IMAGES.'
+                FROM '._ASSETS_TABLE.' 
+                LEFT JOIN '._LOCATIONS_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._LOCATIONS_TABLE.'.'._LOCATIONS_COLUMN_ASSET_ID.'
+                LEFT JOIN '._MEDIA_TABLE.' ON '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '._MEDIA_TABLE.'.'._MEDIA_COLUMN_ASSET_ID.'
+                WHERE '._ASSETS_TABLE.'.'._ASSETS_COLUMN_ASSET_ID.' = '.$asset_id;
         $result = mysql_query($sql);
         return $result;
     }
