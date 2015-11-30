@@ -71,12 +71,12 @@ class CreateAsset {
 				$b[_ASSETS_COLUMN_ASSET_ID] = $data[$i]->asset_id;
 				$b[_ASSETS_COLUMN_NEEDSSYNC] = 0; //asset does not need sync any more
 				$b[_ASSETS_COLUMN_ISNEW] = 0; //mark the asset as NOT new
-				$b["purgeAsset"] = $purgeAsset; //if asset was successfully deleted, purged from client
 				$b["error"] = 0; //return 0 if success
 				array_push($a,$b);
 			} else {	//if insert failed
 				$b[_ASSETS_COLUMN_ASSET_ID] = $data[$i]->asset_id;
 				$b[_ASSETS_COLUMN_NEEDSSYNC] = 1;
+				$b[_ASSETS_COLUMN_ISNEW] = 0; //mark the asset as NOT new
 				$b["error"] = 1; //return 1 if fail
 				array_push($a,$b);
 			}

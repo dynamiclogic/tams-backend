@@ -1,0 +1,227 @@
+swagger: '2.0'
+info:
+  title: Tams API
+  description: Move your app forward with the TAMS API
+  version: 2.0.0
+host: tams.imihov.com
+schemes:
+  - http
+basePath: /api/v2
+produces:
+  - application/json
+paths:
+  /asset/list:
+    get:
+      summary: List of Assers
+      description: |
+        The Asset endpoint returns a list of assets .
+      tags:
+        - Read Assets
+      responses:
+        '200':
+          description: An array of Assets
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Asset'
+        default:
+          description: NOT IMPLEMENTED YET
+          schema:
+            $ref: '#/definitions/Error'
+  /asset/get/{id}:
+    get:
+      summary: Get asset by ID
+      description: Returns the asset requested 
+      parameters:
+        - name: id
+          in: path
+          description: The id of the asset being requested.
+          required: true
+          type: number
+          format: integer
+      tags:
+        - Read Assets
+      responses:
+        '200':
+          description: An array with one asset
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Asset'
+  /asset/delete:
+    put:
+      summary: Delete assets
+      description: 'Mark Assets as deleted in the db'
+      parameters:
+        - name: asset
+          in: body
+          description: The asset JSON you want to post
+          schema:
+            $ref: '#/definitions/deleteAsset'
+          required: true
+      tags:
+        - Write Assets
+      responses:
+        '200':
+          description: An array of asset flags
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                asset_id:
+                  type: number
+                  format: integer
+                  description: 'The id of the deleted asset'
+                needsSync:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0 depending if the deletion was successful'
+                purgeAsset:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0. If responce is 1, purge asset from application table'
+                error:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0.'
+                
+  /asset/create:
+    post:
+      summary: Create assets
+      description: 'Create new Assets'
+      parameters:
+        - name: asset
+          in: body
+          description: The asset JSON you want to post
+          schema:
+            $ref: '#/definitions/Asset'
+          required: true
+      tags:
+        - Write Assets
+      responses:
+        '200':
+          description: An array of asset flags
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                asset_id:
+                  type: number
+                  format: integer
+                  description: 'The id of the deleted asset'
+                needsSync:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0 depending if the creation was successful'
+                isNew:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0 depending if the creation was successful'
+                error:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0.'
+  /asset/update:
+    post:
+      summary: Update assets
+      description: 'Update Assets'
+      parameters:
+        - name: asset
+          in: body
+          description: The asset JSON you want to post
+          schema:
+            $ref: '#/definitions/Asset'
+          required: true
+      tags:
+        - Write Assets
+      responses:
+        '200':
+          description: An array of asset flags
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                asset_id:
+                  type: number
+                  format: integer
+                  description: 'The id of the deleted asset'
+                needsSync:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0 depending if the creation was successful'
+                isNew:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0 depending if the creation was successful'
+                error:
+                  type: number
+                  format: integer
+                  description: 'Return 1 or 0.'
+definitions:
+  Asset:
+    type: object
+    properties:
+      asset_id:
+        type: number
+        format: integer
+        description: 'Unique identifier representing a specific asset'
+      description:
+        type: string
+        description: Description of the asset.
+      name:
+        type: string
+        description: Name of the asset.
+      needsSync:
+        type: string
+        description: A flag defining if the asset will need sync (it will always be 0 on get request)
+      image:
+        type: string
+        description: Image in base64.
+      isNew:
+        type: number
+        format: integer
+        description: A flag defining if the asset is new (it will always be 0 on get request)
+      deleted:
+        type: number
+        format: integer
+        description: A flag defining if the asset is deleted
+      created_at:
+        type: number
+        format: integer
+        description: A UNIX timestamp representing when the asset was created
+      updated_at:
+        type: number
+        format: integer
+        description: A UNIX timestamp representing when the asset was updated
+      longitude:
+        type: number
+        format: double
+        description: The longitude on the asset
+      latitude:
+        type: number
+        format: double
+        description: The latitude on the asset
+  deleteAsset:
+    type: object
+    properties:
+      asset_id:
+        type: number
+        format: integer
+        description: 'Unique identifier representing a specific asset'
+      updated_at:
+        type: number
+        format: integer
+        description: The unix timestamp of the assets update.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string

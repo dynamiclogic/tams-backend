@@ -23,9 +23,9 @@ class DB_Functions {
      */
     public function addAsset($name='',$description='',$latitude='',$longitude='',$images='') {
         //ASSET
-        $assetSql = "INSERT INTO assets (name,description) values(?, ?)";
+        $assetSql = "INSERT INTO assets (asset_id,name,description,created_at,updated_at) values(?, ?, ?, ?, ?)";
         $assetQuery = self::$pdo->prepare($assetSql);
-        $assetQuery->execute(array($name,$description));
+        $assetQuery->execute(array(time(),$name,$description,time(),time()));
 
         //LOCATION
         /* get last inserted auto_increment id */
@@ -55,9 +55,9 @@ class DB_Functions {
      * Update Asset
      */
     public function updateAsset($asset_id,$name, $description) {
-        $sql = "UPDATE assets  set name = ?, description = ? WHERE asset_id = ?";
-        $q = $pdo->prepare($sql);
-        $q->execute(array($name,$description,$asset_id));
+        $sql = "UPDATE assets set name = ?, description = ?, updated_at = ? WHERE asset_id = ?";
+        $q = self::$pdo->prepare($sql);
+        $q->execute(array($name,$description,time(),$asset_id));
     }
 
     /**
