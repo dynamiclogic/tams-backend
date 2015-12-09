@@ -21,13 +21,11 @@ paths:
         '200':
           description: An array of Assets
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Asset'
+            $ref: '#/Assets'
         default:
           description: NOT IMPLEMENTED YET
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/Error'
   /asset/get/{id}:
     get:
       summary: Get asset by ID
@@ -45,20 +43,17 @@ paths:
         '200':
           description: An array with one asset
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Asset'
+            $ref: '#/Assets'
   /asset/delete:
     put:
       summary: Delete assets
       description: 'Mark Assets as deleted in the db'
       parameters:
-        - name: asset
+        - name: assets
           in: body
           description: The asset JSON you want to post
           schema:
-            $ref: '#/definitions/deleteAsset'
-          required: true
+            $ref: '#/DeleteAsset'
       tags:
         - Write Assets
       responses:
@@ -91,11 +86,11 @@ paths:
       summary: Create assets
       description: 'Create new Assets'
       parameters:
-        - name: asset
+        - name: assets
           in: body
           description: The asset JSON you want to post
           schema:
-            $ref: '#/definitions/Asset'
+            $ref: '#/Assets'
           required: true
       tags:
         - Write Assets
@@ -128,11 +123,11 @@ paths:
       summary: Update assets
       description: 'Update Assets'
       parameters:
-        - name: asset
+        - name: assets
           in: body
           description: The asset JSON you want to post
           schema:
-            $ref: '#/definitions/Asset'
+            $ref: '#/Assets'
           required: true
       tags:
         - Write Assets
@@ -160,8 +155,9 @@ paths:
                   type: number
                   format: integer
                   description: 'Return 1 or 0.'
-definitions:
-  Asset:
+Assets:
+  type: array
+  items:
     type: object
     properties:
       asset_id:
@@ -183,7 +179,7 @@ definitions:
       isNew:
         type: number
         format: integer
-        description: A flag defining if the asset is new (it will always be 0 on get request)
+        description: A flag defining if the asset is new (it will always be 0  on get request)
       deleted:
         type: number
         format: integer
@@ -204,7 +200,22 @@ definitions:
         type: number
         format: double
         description: The latitude on the asset
-  deleteAsset:
+      locations:
+        type: array
+        items:
+          type: object
+          properties:
+            longitude:
+              type: number
+              format: double
+              description: The longitude on the asset
+            latitude:
+              type: number
+              format: double
+              description: The latitude on the asset
+DeleteAsset:
+  type: array
+  items:
     type: object
     properties:
       asset_id:
@@ -215,13 +226,14 @@ definitions:
         type: number
         format: integer
         description: The unix timestamp of the assets update.
-  Error:
-    type: object
-    properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
-      fields:
-        type: string
+        required: true
+Error:
+  type: object
+  properties:
+    code:
+      type: integer
+      format: int32
+    message:
+      type: string
+    fields:
+      type: string

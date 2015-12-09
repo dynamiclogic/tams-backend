@@ -11,6 +11,7 @@ class GetAsset {
 		//Util arrays to create response JSON
 		$a=array();
 		$b=array();
+		$parent = array();
 
 		$purgeAllAssets = 0;  //purge all
 		if ($purgeAllAssets) {
@@ -26,40 +27,24 @@ class GetAsset {
 		else {
 			$assets = $db->getAssetById($asset_id);
 		}
-		
-		//error_log($assets);
-		if($assets != false) { //if success
-			$no_of_assets = mysql_num_rows($assets);
-			while ($row = mysql_fetch_array($assets)) {
-				$b[_ASSETS_COLUMN_ASSET_NAME] = $row[_ASSETS_COLUMN_ASSET_NAME];
-				$b[_ASSETS_COLUMN_ASSET_DESCRIPTION] = $row[_ASSETS_COLUMN_ASSET_DESCRIPTION];
-				$b[_ASSETS_COLUMN_ASSET_ID] = $row[_ASSETS_COLUMN_ASSET_ID];
-				$b[_ASSETS_COLUMN_NEEDSSYNC] = 0; //asset does not need sync any more
-				$b[_ASSETS_COLUMN_ISNEW] = 0; //mark the asset as NOT new
-				$b[_ASSETS_COLUMN_DELETED] = $row[_ASSETS_COLUMN_DELETED];
-				$b[_ASSETS_COLUMN_CREATED_AT] = $row[_ASSETS_COLUMN_CREATED_AT];
-				$b[_ASSETS_COLUMN_UPDATED_AT] = $row[_ASSETS_COLUMN_UPDATED_AT];
-	
-				// locations
-				$b[_LOCATIONS_COLUMN_LONGITUDE] = 0;
-				$b[_LOCATIONS_COLUMN_LATITUDE] = 0;
-				if ($row[_LOCATIONS_COLUMN_LONGITUDE])
-					$b[_LOCATIONS_COLUMN_LONGITUDE] = $row[_LOCATIONS_COLUMN_LONGITUDE];
-				if ($row[_LOCATIONS_COLUMN_LATITUDE])
-					$b[_LOCATIONS_COLUMN_LATITUDE] = $row[_LOCATIONS_COLUMN_LATITUDE];
-	
-				// media
-				$b[_MEDIA_COLUMN_IMAGES] = "";
-				if ($row[_MEDIA_COLUMN_IMAGES])
-					$b[_MEDIA_COLUMN_IMAGES] = $row[_MEDIA_COLUMN_IMAGES];
-	
-				$b["purgeAllAssets"] = $purgeAllAssets;
-				array_push($a,$b);
-			}
-		}
-		//Post JSON response back to Application
-		//		error_log("PULL SERVER RESPONCE: ".json_encode($a),0);
 
+		while($row = mysql_fetch_assoc($assets))
+		{   
+
+		    //$parent[$row['asset_id']]= array("asset_id"=>$row['asset_id'],"name"=>$row['name']);
+		    $parent = $row;
+		    $parent[_ASSETS_COLUMN_NEEDSSYNC] = 0;
+		    $parent[_ASSETS_COLUMN_ISNEW] = 0;
+		    $parent["purgeAllAssets"] = $purgeAllAssets;
+		
+		    $result1 = $db->getLocationsByAssetId($row[_ASSETS_COLUMN_ASSET_ID]);
+		
+		    while($row1 = mysql_fetch_array($result1)) {
+		        $parent["locations"][] = array(_LOCATIONS_COLUMN_LATITUDE=>$row1[_LOCATIONS_COLUMN_LATITUDE],
+		        															  _LOCATIONS_COLUMN_LONGITUDE=>$row1[_LOCATIONS_COLUMN_LONGITUDE]);
+		    }
+		    array_push($a, $parent);
+		}
 		error_log("GET ENDED");
 		return $a;
 	}

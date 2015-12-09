@@ -53,6 +53,7 @@ class API extends AbstractAPI
             if ($this->verb == 'create') {
                 $create = new CreateAsset();
                 parse_str($this->file, $post);
+                error_log($post['assets']);
                 return $create->processCreate(json_decode($post['assets']));
             } elseif ($this->verb == 'update') {
                 $update = new UpdateAsset();

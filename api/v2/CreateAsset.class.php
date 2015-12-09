@@ -25,6 +25,7 @@ class CreateAsset {
 		//Util arrays to create response JSON
 		$a=array();
 		$b=array();
+		$locations = array();
 		
 		$purgeAsset = 0;
 		
@@ -53,7 +54,13 @@ class CreateAsset {
 				$asset_images = $data[$i]->images;
 		
 			if ($data[$i]->isNew == 1) {
-				//Store User into MySQL DB
+
+				//get all locations for the asset and push them into array
+				foreach ($data[$i]->locations as $location) {
+					array_push($locations, (array)$location);
+				}
+
+				//Store Asset into MySQL DB
 				$query = $db->addAsset($asset_id,
 									   $asset_name,
 									   $asset_description,
@@ -62,7 +69,8 @@ class CreateAsset {
 									   $asset_deleted,
 									   $asset_latitude,
 									   $asset_longitude,
-									   $asset_images);
+									   $asset_images,
+									   $locations);
 			} else {
 				return "Asset not new";
 			}

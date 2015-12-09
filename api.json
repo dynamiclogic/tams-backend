@@ -25,16 +25,13 @@
                     "200": {
                         "description": "An array of Assets",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Asset"
-                            }
+                            "$ref": "#/Assets"
                         }
                     },
                     "default": {
                         "description": "NOT IMPLEMENTED YET",
                         "schema": {
-                            "$ref": "#/definitions/Error"
+                            "$ref": "#/Error"
                         }
                     }
                 }
@@ -61,10 +58,7 @@
                     "200": {
                         "description": "An array with one asset",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Asset"
-                            }
+                            "$ref": "#/Assets"
                         }
                     }
                 }
@@ -76,13 +70,12 @@
                 "description": "Mark Assets as deleted in the db",
                 "parameters": [
                     {
-                        "name": "asset",
+                        "name": "assets",
                         "in": "body",
                         "description": "The asset JSON you want to post",
                         "schema": {
-                            "$ref": "#/definitions/deleteAsset"
-                        },
-                        "required": true
+                            "$ref": "#/DeleteAsset"
+                        }
                     }
                 ],
                 "tags": [
@@ -129,11 +122,11 @@
                 "description": "Create new Assets",
                 "parameters": [
                     {
-                        "name": "asset",
+                        "name": "assets",
                         "in": "body",
                         "description": "The asset JSON you want to post",
                         "schema": {
-                            "$ref": "#/definitions/Asset"
+                            "$ref": "#/Assets"
                         },
                         "required": true
                     }
@@ -182,11 +175,11 @@
                 "description": "Update Assets",
                 "parameters": [
                     {
-                        "name": "asset",
+                        "name": "assets",
                         "in": "body",
                         "description": "The asset JSON you want to post",
                         "schema": {
-                            "$ref": "#/definitions/Asset"
+                            "$ref": "#/Assets"
                         },
                         "required": true
                     }
@@ -230,8 +223,9 @@
             }
         }
     },
-    "definitions": {
-        "Asset": {
+    "Assets": {
+        "type": "array",
+        "items": {
             "type": "object",
             "properties": {
                 "asset_id": {
@@ -258,7 +252,7 @@
                 "isNew": {
                     "type": "number",
                     "format": "integer",
-                    "description": "A flag defining if the asset is new (it will always be 0 on get request)"
+                    "description": "A flag defining if the asset is new (it will always be 0  on get request)"
                 },
                 "deleted": {
                     "type": "number",
@@ -284,10 +278,31 @@
                     "type": "number",
                     "format": "double",
                     "description": "The latitude on the asset"
+                },
+                "locations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "longitude": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "The longitude on the asset"
+                            },
+                            "latitude": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "The latitude on the asset"
+                            }
+                        }
+                    }
                 }
             }
-        },
-        "deleteAsset": {
+        }
+    },
+    "DeleteAsset": {
+        "type": "array",
+        "items": {
             "type": "object",
             "properties": {
                 "asset_id": {
@@ -298,23 +313,24 @@
                 "updated_at": {
                     "type": "number",
                     "format": "integer",
-                    "description": "The unix timestamp of the assets update."
+                    "description": "The unix timestamp of the assets update.",
+                    "required": true
                 }
             }
-        },
-        "Error": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "fields": {
-                    "type": "string"
-                }
+        }
+    },
+    "Error": {
+        "type": "object",
+        "properties": {
+            "code": {
+                "type": "integer",
+                "format": "int32"
+            },
+            "message": {
+                "type": "string"
+            },
+            "fields": {
+                "type": "string"
             }
         }
     }

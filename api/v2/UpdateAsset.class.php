@@ -25,6 +25,7 @@ class UpdateAsset {
 		//Util arrays to create response JSON
 		$a=array();
 		$b=array();
+		$locations = array();
 		
 		$purgeAsset = 0;
 		
@@ -54,6 +55,12 @@ class UpdateAsset {
 				$asset_images = $data[$i]->images;
 		
 				if ($data[$i]->isNew == 0) {
+					//get all locations for the asset and push them into array
+					foreach ($data[$i]->locations as $location) {
+						array_push($locations, (array)$location);
+					}
+
+					//Store Asset into MySQL DB
 					$query = $db->updateAsset($asset_id,
 										   	  $asset_name,
 										   	  $asset_description,
@@ -62,7 +69,8 @@ class UpdateAsset {
 										   	  $asset_deleted,
 										   	  $asset_latitude,
 										   	  $asset_longitude,
-										   	  $asset_images); //send the timestamp to compare
+										   	  $asset_images,
+										   	  $locations); //send the timestamp to compare
 				} else {
 					return "Asset is new";
 				}
@@ -70,13 +78,11 @@ class UpdateAsset {
 			if($query) { //if success
 				$b[_ASSETS_COLUMN_ASSET_ID] = $data[$i]->asset_id;
 				$b[_ASSETS_COLUMN_NEEDSSYNC] = 0; //asset does not need sync any more
-				$b["purgeAsset"] = 1; //if asset was successfully deleted, purged from client
 				$b["error"] = 0; //return 0 if success
 				array_push($a,$b);
 			} else {	//if insert failed
 				$b[_ASSETS_COLUMN_ASSET_ID] = $data[$i]->asset_id;
 				$b[_ASSETS_COLUMN_NEEDSSYNC] = 1;
-				$b["purgeAsset"] = 0;
 				$b["error"] = 1; //return 1 if fail
 				array_push($a,$b);
 			}
