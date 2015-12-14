@@ -52,6 +52,26 @@ class DB_Functions {
     }
 
     /**
+     * Undelete asset
+     * 
+     */
+    public function undeleteAsset($asset_id) {
+        // delete data
+        $sql = "UPDATE assets SET deleted = 0, updated_at = ".time()." WHERE asset_id = ?";
+        $q = self::$pdo->prepare($sql);
+        $q->execute(array($asset_id));
+    }
+
+    /**
+     * Purge User
+     */
+    public function purgeAsset($asset_id) {
+        $sql = "DELETE FROM assets WHERE asset_id = ?";
+        $q = self::$pdo->prepare($sql);
+        $q->execute(array($asset_id));
+    }
+
+    /**
      * Update Asset
      */
     public function updateAsset($asset_id,$name, $description) {
@@ -74,6 +94,24 @@ class DB_Functions {
                     LEFT JOIN media ON assets.asset_id = media.asset_id
                     LEFT JOIN locations ON assets.asset_id = locations.asset_id
                 WHERE deleted = 0
+                    ORDER BY assets.asset_id DESC';
+        return self::$pdo->query($sql);
+    }
+
+    /**
+     * Getting all active assets
+     */
+    public function getDeletedAssets() {
+        $sql = 'SELECT assets.*,
+                    locations.longitude,
+                    locations.latitude,
+                    asset_types.type_value,
+                    media.images
+                FROM assets
+                    LEFT JOIN asset_types ON assets.type_id = asset_types.asset_type_id
+                    LEFT JOIN media ON assets.asset_id = media.asset_id
+                    LEFT JOIN locations ON assets.asset_id = locations.asset_id
+                WHERE deleted = 1
                     ORDER BY assets.asset_id DESC';
         return self::$pdo->query($sql);
     }

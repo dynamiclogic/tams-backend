@@ -12,7 +12,7 @@ header('Location: index.php');
 <?php 
 	$temp_assets = array();
 	$db = new DB_Functions();
-	$assets = $db->getActiveAssets();
+	$assets = $db->getDeletedAssets();
 ?>
 
 <?php foreach ($assets as $asset):?>
@@ -52,10 +52,10 @@ header('Location: index.php');
 	   		<a href="read.php?asset_id=<?php print($asset['asset_id'])?>"><i class="glyphicon glyphicon-eye-open"></i></a>
 	   	</td>
 		<td align="center">
-	   		<a href="update.php?asset_id=<?php print($asset['asset_id'])?>"><i class="glyphicon glyphicon-edit"></i></a>
+	   		<a href="undelete.php?asset_id=<?php print($asset['asset_id'])?>"><i class="glyphicon glyphicon-ok-circle"></i></a>
 	   	</td>
 	   	<td align="center">
-	   		<a href="delete.php?asset_id=<?php print($asset['asset_id'])?>"><i class="glyphicon glyphicon-remove-circle"></i></a>
+	   		<a href="purge.php?asset_id=<?php print($asset['asset_id'])?>"><i class="glyphicon glyphicon-ban-circle"></i></a>
 	   	</td>
 	</tr>
 <?php endforeach ?>

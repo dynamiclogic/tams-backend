@@ -1,4 +1,5 @@
 (function($){
+		var ignore = [];
         $.fn.extend({
             tableExport: function(options) {
                 var defaults = {
@@ -15,31 +16,34 @@
                 
 				var options = $.extend(defaults, options);
 				var el = this;
-				
+				var ignoreColumn = JSON.parse(defaults.ignoreColumn);
+
 				if(defaults.type == 'csv' || defaults.type == 'txt'){
 				
 					// Header
 					var tdData ="";
+					console.log(ignoreColumn);
 					$(el).find('thead').find('tr').each(function() {
-					tdData += "\n";					
+					tdData += "\r\n";					
 						$(this).filter(':visible').find('th').each(function(index,data) {
 							if ($(this).css('display') != 'none'){
-								if(defaults.ignoreColumn.indexOf(index) == -1){
+								if(ignoreColumn.indexOf(index) == -1){
 									tdData += '"' + parseString($(this)) + '"' + defaults.separator;									
 								}
 							}
 							
 						});
 						tdData = $.trim(tdData);
-						tdData = $.trim(tdData).substring(0, tdData.length -1);
+						tdData = tdData.replace(/,\s*$/, "");
+						//tdData = $.trim(tdData).substring(0, tdData.length -1);
 					});
 					
 					// Row vs Column
 					$(el).find('tbody').find('tr').each(function() {
-					tdData += "\n";
+					tdData += "\r\n";
 						$(this).filter(':visible').find('td').each(function(index,data) {
 							if ($(this).css('display') != 'none'){
-								if(defaults.ignoreColumn.indexOf(index) == -1){
+								if(ignoreColumn.indexOf(index) == -1){
 									tdData += '"'+ parseString($(this)) + '"'+ defaults.separator;
 								}
 							}
@@ -53,7 +57,21 @@
 						console.log(tdData);
 					}
 					var base64data = "base64," + $.base64.encode(tdData);
-					window.open('data:application/'+defaults.type+';filename=exportData;' + base64data);
+					//window.open('data:application/'+defaults.type+';filename=exportData;' + base64data);
+					var uri = "data:application/"+defaults.type+";" + base64data;
+
+					var d = new Date();
+					//var filenameDate = (d.getFullYear()*100 + d.getMonth()+1)*100 + d.getDate();
+					var filenameDate = (d.getMonth()+1)+"_"+ d.getDate()+"_"+d.getFullYear();
+					var filenameTime = d.getHours()+'_'+d.getMinutes()+'_'+d.getSeconds();
+
+					var downloadLink = document.createElement("a");
+    				downloadLink.href = uri;
+    				downloadLink.download = "assets_"+filenameDate +"-"+ filenameTime+ "."+defaults.type;
+    				document.body.appendChild(downloadLink);
+    				downloadLink.click();
+    				document.body.removeChild(downloadLink);
+
 				}else if(defaults.type == 'sql'){
 				
 					// Header
