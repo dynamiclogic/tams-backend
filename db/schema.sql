@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 22, 2015 at 09:39 AM
+-- Generation Time: Dec 17, 2015 at 12:59 PM
 -- Server version: 5.5.44-0+deb7u1
 -- PHP Version: 5.6.13-0+deb8u1
 
@@ -28,6 +28,7 @@ USE `tams`;
 -- Table structure for table `api_auth`
 --
 
+DROP TABLE IF EXISTS `api_auth`;
 CREATE TABLE IF NOT EXISTS `api_auth` (
 `api_auth_id` int(11) NOT NULL,
   `key` varchar(255) NOT NULL,
@@ -40,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `api_auth` (
 -- Table structure for table `assets`
 --
 
+DROP TABLE IF EXISTS `assets`;
 CREATE TABLE IF NOT EXISTS `assets` (
 `asset_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -50,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `created_by` varchar(255) NOT NULL,
   `updated_by` varchar(255) NOT NULL,
   `deleted` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=1445467304 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2147483647 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -58,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `assets` (
 -- Table structure for table `asset_types`
 --
 
+DROP TABLE IF EXISTS `asset_types`;
 CREATE TABLE IF NOT EXISTS `asset_types` (
 `asset_type_id` int(11) NOT NULL,
   `type_value` varchar(50) NOT NULL
@@ -69,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `asset_types` (
 -- Table structure for table `attributes`
 --
 
+DROP TABLE IF EXISTS `attributes`;
 CREATE TABLE IF NOT EXISTS `attributes` (
 `attribute_id` int(11) NOT NULL,
   `attribute_label` varchar(50) NOT NULL
@@ -80,12 +84,13 @@ CREATE TABLE IF NOT EXISTS `attributes` (
 -- Table structure for table `attributes_indexes`
 --
 
+DROP TABLE IF EXISTS `attributes_indexes`;
 CREATE TABLE IF NOT EXISTS `attributes_indexes` (
 `attribute_index_id` int(11) NOT NULL,
   `asset_id` int(11) NOT NULL,
   `attribute_id` int(11) NOT NULL,
   `attribute_value_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -93,6 +98,7 @@ CREATE TABLE IF NOT EXISTS `attributes_indexes` (
 -- Table structure for table `attributes_values`
 --
 
+DROP TABLE IF EXISTS `attributes_values`;
 CREATE TABLE IF NOT EXISTS `attributes_values` (
 `attribute_value_id` int(10) NOT NULL,
   `attribute_value` varchar(255) NOT NULL,
@@ -105,13 +111,14 @@ CREATE TABLE IF NOT EXISTS `attributes_values` (
 -- Table structure for table `locations`
 --
 
+DROP TABLE IF EXISTS `locations`;
 CREATE TABLE IF NOT EXISTS `locations` (
 `location_id` int(11) NOT NULL,
   `asset_id` int(11) NOT NULL,
   `address` varchar(255) NOT NULL,
   `longitude` float NOT NULL,
   `latitude` float NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=713 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -119,12 +126,13 @@ CREATE TABLE IF NOT EXISTS `locations` (
 -- Table structure for table `media`
 --
 
+DROP TABLE IF EXISTS `media`;
 CREATE TABLE IF NOT EXISTS `media` (
 `media_id` int(11) NOT NULL,
   `asset_id` int(11) NOT NULL,
-  `images` varchar(255) DEFAULT NULL,
+  `images` longblob,
   `voice_memo` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=607 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -132,6 +140,7 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
 `user_id` int(11) NOT NULL,
   `firstname` varchar(50) NOT NULL,
@@ -140,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(50) DEFAULT NULL,
   `role` tinyint(1) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -213,7 +222,7 @@ MODIFY `api_auth_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `assets`
 --
 ALTER TABLE `assets`
-MODIFY `asset_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1445467304;
+MODIFY `asset_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2147483647;
 --
 -- AUTO_INCREMENT for table `asset_types`
 --
@@ -228,7 +237,7 @@ MODIFY `attribute_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT for table `attributes_indexes`
 --
 ALTER TABLE `attributes_indexes`
-MODIFY `attribute_index_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `attribute_index_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `attributes_values`
 --
@@ -238,17 +247,17 @@ MODIFY `attribute_value_id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=91;
+MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=713;
 --
 -- AUTO_INCREMENT for table `media`
 --
 ALTER TABLE `media`
-MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=607;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- Constraints for dumped tables
 --
@@ -283,7 +292,7 @@ ADD CONSTRAINT `locations_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `assets` (
 -- Constraints for table `media`
 --
 ALTER TABLE `media`
-ADD CONSTRAINT `media_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`asset_id`);
+ADD CONSTRAINT `media_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`asset_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -8,7 +8,7 @@ class DB_Connect {
     }
     
     public static function connect() {      
-        require_once 'config.php';
+        require_once '../config.php';
 
        // One connection through whole application
        if ( null == self::$cont ) {      

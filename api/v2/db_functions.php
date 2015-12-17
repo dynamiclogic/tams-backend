@@ -8,7 +8,7 @@ class DB_Functions {
     // constructor
     function __construct() {
         include_once './db_connect.php';
-        include_once './config.php';
+        include_once '../../config.php';
         // connecting to database
         $this->db = new DB_Connect();
         $this->db->connect();

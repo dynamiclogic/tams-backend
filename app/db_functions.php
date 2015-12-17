@@ -6,7 +6,7 @@ class DB_Functions {
     // constructor
     function __construct() {
         require_once 'db_connect.php';
-        require_once 'config.php';
+        require_once '../config.php';
         // connecting to database
         self::$pdo = DB_Connect::connect();
         self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

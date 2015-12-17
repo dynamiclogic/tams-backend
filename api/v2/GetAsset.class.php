@@ -1,6 +1,6 @@
 <?php
 include_once './db_functions.php';
-include_once './config.php';
+include_once '../../config.php';
 
 class GetAsset {
 	public function processGetAsset($asset_id = null) {

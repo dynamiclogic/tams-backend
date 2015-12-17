@@ -1,5 +1,5 @@
 <?php 
-	include 'config.php';
+	include '../config.php';
 	include 'db_functions.php';
 
 	$user_id = 0;

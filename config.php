@@ -7,6 +7,9 @@ define("DB_USER", "tams");
 define("DB_PASSWORD", "tams");
 define("DB_DATABASE", "tams");
 
+
+# DO NOT TOUCH ANYTHING BELLOW THIS LINE
+# -------------------------------------#
 // Tables
 define("_ASSETS_TABLE", "assets"); 
 define("_LOCATIONS_TABLE", "locations"); 
@@ -59,5 +62,10 @@ define("_API_AUTH_PRACTICE","practice");
 
 //post requests
 define("_API_AUTH_POST", "apiAuth");
-define("_ASSETS_JSON_POST", "assetsJSON");
+define("_ASSETS_JSON_POST", "asset");
+
+/* Skin */
+if (!defined ('skin')) {
+	define('skin', '../skin/default/');
+}
 ?>

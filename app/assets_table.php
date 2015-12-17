@@ -1,5 +1,5 @@
 <?php
-include "config.php";
+include "../config.php";
 include "db_functions.php";
 session_start();
 if(empty($_SESSION['login_user']))

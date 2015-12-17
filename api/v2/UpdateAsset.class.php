@@ -3,7 +3,7 @@
 //send password only first, after success send the data
 
 include_once './db_functions.php';
-include_once './config.php';
+include_once '../../config.php';
 
 class UpdateAsset {
 	public function processUpdate($data) {
