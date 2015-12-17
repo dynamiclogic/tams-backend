@@ -25,12 +25,12 @@
 .loading {width: 15px; display:none;}
 
 
-@media (max-width: 991px) {
+@media (max-width: 691px) {
 	#assets-table {display:none;}
 	#desktop-assets {display: none;}
 }
 
-@media (min-width: 992px) {
+@media (min-width: 692px) {
 	.list-group-item {display:none;}
 	#mobile-assets-table {display: none;}
 }
@@ -98,11 +98,11 @@ input#fileToUpload {
 	width: 44px;
 }
 
-@media (max-width: 769px) {
+@media (max-width: 669px) {
 	.settings-label {display:block;}
 	#settings-icon {display: none;}
 }
 
-@media (min-width: 768px) {
+@media (min-width: 668px) {
 	.settings-label {display:none;}
 }

@@ -17,6 +17,10 @@ $(function() {
     populateAssets();
 });
 
+function loadingImg () {
+	$('#assets_table table > tbody:first').html("<img style='width:30px;' src='../skin/default/img/loading.gif'/>");
+}
+
 //pull the table body
 function populateAssets() {
 	$('#top-bar-deleted').hide();
@@ -150,7 +154,7 @@ function reloadTableFilter() {
 					<div id="center" class="column">
 						<span id="last_refreshed"></span>
 					</div>
-					<div id="right" class="column">
+					<!--<div id="right" class="column">
 						<select id="refresh_rate" class="form-control" onchange="refreshOnChange($(this));">
 							<option value="0">No Refresh</option>
 							<option value="1000">Every 1 sec</option>
@@ -158,7 +162,7 @@ function reloadTableFilter() {
 							<option value="10000">Every 10 sec</option>
 							<option value="30000">Every 30 sec</option>
 						</select>
-					</div>
+					</div>-->
 		    	</div>
 		    	<div id="top-bar-deleted">
 		    		<div class="column deleted-assets-bar" >DELETED ASSETS</div>

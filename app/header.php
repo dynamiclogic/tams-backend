@@ -33,8 +33,8 @@
       <ul class="nav navbar-nav">
         <!--<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
         <li><a href="#">Link</a></li>-->
-        <li id="active-assets"><a href="#" onclick="populateAssets()">Active Assets <span class="sr-only">(current)</span></a></li>
-        <li id="deleted-assets"><a href="#" onclick="populateDeletedAssets()">Deleted Assets <span class="sr-only">(current)</span></a></li>
+        <li id="active-assets"><a href="home.php" onclick="loadingImg();populateAssets()">Active Assets <span class="sr-only">(current)</span></a></li>
+        <li id="deleted-assets"><a href="#" onclick="loadingImg();populateDeletedAssets()">Deleted Assets <span class="sr-only">(current)</span></a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Export <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

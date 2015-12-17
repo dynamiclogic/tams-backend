@@ -56,8 +56,10 @@ class CreateAsset {
 			if ($data[$i]->isNew == 1) {
 
 				//get all locations for the asset and push them into array
-				foreach ($data[$i]->locations as $location) {
-					array_push($locations, (array)$location);
+				if (isset($data[$i]->locations)) {
+					foreach ($data[$i]->locations as $location) {
+						array_push($locations, (array)$location);
+					}
 				}
 
 				//Store Asset into MySQL DB
