@@ -4,7 +4,7 @@ Backend for TAMS
 
 How to install the Backend
 --------------------------
-	**This document goes over how we have set up the TAMS web application and API.**
+This document goes over how we have set up the TAMS web application and API.
 
 
 **Assumptions**
@@ -20,13 +20,13 @@ For a server set up, you can use this as a base, however, it might require a dif
 Install the Dependencies
 ------------------------
 **We need the following bits and pieces**
-	- Apache with the fillowing modules enabled:
-		- - rewrite
-		- - headers
-		- - php
-	- PHP
-		- - Version >=5.5
-	- MySQL
+- Apache with the fillowing modules enabled:
+- - rewrite
+- - headers
+- - php
+- PHP
+- - Version >=5.5
+- MySQL
 
 **For Debian based machines run the following commands to install the requirements:**
 
