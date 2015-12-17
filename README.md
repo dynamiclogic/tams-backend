@@ -8,6 +8,7 @@ This document goes over how we have set up the TAMS web application and API.
 
 
 **Assumptions**
+
 For a server set up, you can use this as a base, however, it might require a different approach unless you have complete control (i.e. you are root) on the server and can install all the dependencies, secure the machine, etc. So, use these instructions as a starting point rather than a definitive “this is the ultimate way” step-by-step guide.
 
 
@@ -21,11 +22,11 @@ Install the Dependencies
 ------------------------
 **We need the following bits and pieces**
 - Apache with the fillowing modules enabled:
-- - rewrite
-- - headers
-- - php
+  - rewrite
+  - headers
+  - php
 - PHP
-- - Version >=5.5
+  - Version >=5.5
 - MySQL
 
 **For Debian based machines run the following commands to install the requirements:**
